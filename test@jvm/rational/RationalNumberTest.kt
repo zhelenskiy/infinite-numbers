@@ -1,14 +1,18 @@
 package rational
 
 import com.zhelenskiy.infinite.numbers.rational.*
+import com.zhelenskiy.infinite.numbers.rational.IntegerNumber.Companion.zero
 import com.zhelenskiy.infinite.numbers.rational.invoke
+import com.zhelenskiy.infinite.numbers.utils.absolute
+import com.zhelenskiy.infinite.numbers.utils.parseString
+import com.zhelenskiy.infinite.numbers.utils.square
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class RationalNumberTest {
-    private fun int(s: String) = Integer.parseString(s)
+    private fun int(s: String) = IntegerNumber.parseString(s)
     private fun ratio(n: String, d: String): RationalNumber = RationalNumber(int(n), int(d))
 
     @Test
@@ -40,7 +44,7 @@ class RationalNumberTest {
         assertEquals("1/3", (a * b).toString())
         assertEquals("3/4", (a / b).toString())
 
-        assertFailsWith<IllegalArgumentException> { a / Integer.zero }
+        assertFailsWith<IllegalArgumentException> { a / zero }
     }
 
     @Test
@@ -71,23 +75,23 @@ class RationalNumberTest {
     @Test
     fun formattingDivisionMixedDotComma() {
         val r = ratio("7", "3")
-        assertEquals("7/3", r.toString(radix = 10, fractionFormat = FractionFormat.DIVISION))
-        assertEquals("2 1/3", r.toString(radix = 10, fractionFormat = FractionFormat.MIXED))
-        assertEquals("2.(3)", r.toString(radix = 10, fractionFormat = FractionFormat.DOT))
-        assertEquals("2,(3)", r.toString(radix = 10, fractionFormat = FractionFormat.COMMA))
+        assertEquals("7/3", r.toString(fractionFormat = FractionFormat.DIVISION, radix = 10))
+        assertEquals("2 1/3", r.toString(fractionFormat = FractionFormat.MIXED, radix = 10))
+        assertEquals("2.(3)", r.toString(fractionFormat = FractionFormat.DOT, radix = 10))
+        assertEquals("2,(3)", r.toString(fractionFormat = FractionFormat.COMMA, radix = 10))
 
         val half = ratio("1", "2")
-        assertEquals("0.5", half.toString(10, FractionFormat.DOT))
-        assertEquals("0,5", half.toString(10, FractionFormat.COMMA))
+        assertEquals("0.5", half.toString(FractionFormat.DOT, 10))
+        assertEquals("0,5", half.toString(FractionFormat.COMMA, 10))
     }
 
     @Test
     fun dotBuilder() {
         val piLike = RationalNumber("3.14")
-        assertEquals("3.14", piLike.toString(10, FractionFormat.DOT))
+        assertEquals("3.14", piLike.toString(FractionFormat.DOT, 10))
 
         val oneTwoRepeatingThree = RationalNumber("1.2(3)")
-        assertEquals("1.2(3)", oneTwoRepeatingThree.toString(10, FractionFormat.DOT))
+        assertEquals("1.2(3)", oneTwoRepeatingThree.toString(FractionFormat.DOT, 10))
 
         assertFailsWith<IllegalArgumentException> { RationalNumber("1.-1") }
         assertFailsWith<IllegalArgumentException> { RationalNumber("1.1", 1) }

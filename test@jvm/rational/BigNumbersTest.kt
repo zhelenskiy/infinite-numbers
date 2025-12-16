@@ -1,13 +1,15 @@
 package rational
 
 import com.zhelenskiy.infinite.numbers.rational.*
-import com.zhelenskiy.infinite.numbers.rational.invoke
+import com.zhelenskiy.infinite.numbers.rational.IntegerNumber.Companion.two
+import com.zhelenskiy.infinite.numbers.utils.parseString
+import com.zhelenskiy.infinite.numbers.utils.remQuotient
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class BigNumbersTest {
-    private fun int(s: String) = Integer.parseString(s)
+    private fun int(s: String) = IntegerNumber.parseString(s)
 
     @Test
     fun bigIntegerRoundTripAndArithmetic() {
@@ -43,10 +45,10 @@ class BigNumbersTest {
 
         // Simple arithmetic remains consistent
         val doubled = r + r
-        assertEquals(expected * Integer(2), doubled)
+        assertEquals(expected * two, doubled)
 
         // Formatting smoke in base 10
-        val s = r.toString(10, FractionFormat.DIVISION)
+        val s = r.toString(FractionFormat.DIVISION, 10)
         assertTrue('/' in s)
     }
 }

@@ -1,12 +1,16 @@
 package rational
 
 import com.zhelenskiy.infinite.numbers.rational.*
-import com.zhelenskiy.infinite.numbers.rational.invoke
+import com.zhelenskiy.infinite.numbers.utils.invoke
+import com.zhelenskiy.infinite.numbers.utils.mod
+import com.zhelenskiy.infinite.numbers.utils.modQuotient
+import com.zhelenskiy.infinite.numbers.utils.rem
+import com.zhelenskiy.infinite.numbers.utils.remQuotient
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class IntegerEdgeCasesTest {
-    private fun int(s: Int) = Integer(s)
+    private fun int(s: Int) = IntegerNumber(s)
 
     @Test
     fun euclideanDivisionLawVariousSigns() {

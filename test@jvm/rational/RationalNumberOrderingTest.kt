@@ -1,13 +1,15 @@
 package rational
 
 import com.zhelenskiy.infinite.numbers.rational.*
+import com.zhelenskiy.infinite.numbers.utils.parseString
+import com.zhelenskiy.infinite.numbers.utils.sign
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class RationalNumberOrderingTest {
-    private fun int(s: String) = Integer.parseString(s)
+    private fun int(s: String) = IntegerNumber.parseString(s)
     private fun ratio(n: String, d: String): RationalNumber = RationalNumber(int(n), int(d))
 
     @Test

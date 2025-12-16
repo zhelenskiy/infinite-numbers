@@ -1,20 +1,26 @@
 package rational
 
 import com.zhelenskiy.infinite.numbers.rational.*
-import com.zhelenskiy.infinite.numbers.rational.invoke
+import com.zhelenskiy.infinite.numbers.utils.invoke
+import com.zhelenskiy.infinite.numbers.utils.mod
+import com.zhelenskiy.infinite.numbers.utils.modQuotient
+import com.zhelenskiy.infinite.numbers.utils.parseString
+import com.zhelenskiy.infinite.numbers.utils.rem
+import com.zhelenskiy.infinite.numbers.utils.remQuotient
+import com.zhelenskiy.infinite.numbers.utils.times
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class IntegerAllMethodsTest {
-    private fun int(s: String) = Integer.parseString(s)
+    private fun int(s: String) = IntegerNumber.parseString(s)
 
     @Test
     fun constructorsForAllPrimitives() {
         // Signed
-        assertEquals(int("-128"), Integer((-128).toByte()))
-        assertEquals(int("32767"), Integer(32767.toShort()))
-        assertEquals(int("2147483647"), Integer(Int.MAX_VALUE))
-        assertEquals(int("-9223372036854775808"), Integer(Long.MIN_VALUE))
+        assertEquals(int("-128"), IntegerNumber((-128).toByte()))
+        assertEquals(int("32767"), IntegerNumber(32767.toShort()))
+        assertEquals(int("2147483647"), IntegerNumber(Int.MAX_VALUE))
+        assertEquals(int("-9223372036854775808"), IntegerNumber(Long.MIN_VALUE))
 
         // Unsigned
         val ub: UByte = 255u
@@ -22,10 +28,10 @@ class IntegerAllMethodsTest {
         val ui: UInt = 4000000000u
         val ul: ULong = 18446744073709551615u
 
-        assertEquals(int("255"), Integer(ub))
-        assertEquals(int("65535"), Integer(us))
-        assertEquals(int("4000000000"), Integer(ui))
-        assertEquals(int("18446744073709551615"), Integer(ul))
+        assertEquals(int("255"), IntegerNumber(ub))
+        assertEquals(int("65535"), IntegerNumber(us))
+        assertEquals(int("4000000000"), IntegerNumber(ui))
+        assertEquals(int("18446744073709551615"), IntegerNumber(ul))
     }
 
     @Test

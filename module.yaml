@@ -10,3 +10,9 @@ product:
 
 dependencies:
   - $libs.bignum
+  - $libs.kotlinx.atomicfu
+  - $libs.kotlinx.collections.immutable
+
+settings:
+  kotlin:
+    freeCompilerArgs: [ -Xcontext-parameters ]

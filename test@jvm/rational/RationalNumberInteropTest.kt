@@ -1,12 +1,19 @@
 package rational
 
 import com.zhelenskiy.infinite.numbers.rational.*
+import com.zhelenskiy.infinite.numbers.rational.IntegerNumber.Companion.one
+import com.zhelenskiy.infinite.numbers.rational.IntegerNumber.Companion.zero
+import com.zhelenskiy.infinite.numbers.utils.div
+import com.zhelenskiy.infinite.numbers.utils.minus
+import com.zhelenskiy.infinite.numbers.utils.parseString
+import com.zhelenskiy.infinite.numbers.utils.plus
+import com.zhelenskiy.infinite.numbers.utils.times
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class RationalNumberInteropTest {
-    private fun int(s: String) = Integer.parseString(s)
+    private fun int(s: String) = IntegerNumber.parseString(s)
     private fun ratio(n: String, d: String): RationalNumber = RationalNumber(int(n), int(d))
 
     @Test
@@ -55,9 +62,9 @@ class RationalNumberInteropTest {
     @Test
     fun divisionIdentitiesAndErrors() {
         val r = ratio("-7", "5")
-        assertEquals(r.toString(), (r / Integer.one).toString())
+        assertEquals(r.toString(), (r / one).toString())
         assertEquals((-r).toString(), (r / int("-1")).toString())
 
-        assertFailsWith<IllegalArgumentException> { r / Integer.zero }
+        assertFailsWith<IllegalArgumentException> { r / zero }
     }
 }

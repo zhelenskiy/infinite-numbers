@@ -1,12 +1,15 @@
 package rational
 
 import com.zhelenskiy.infinite.numbers.rational.*
+import com.zhelenskiy.infinite.numbers.rational.IntegerNumber.Companion.one
+import com.zhelenskiy.infinite.numbers.rational.IntegerNumber.Companion.zero
+import com.zhelenskiy.infinite.numbers.utils.parseString
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class RationalNumberPropertiesTest {
-    private fun int(s: String) = Integer.parseString(s)
+    private fun int(s: String) = IntegerNumber.parseString(s)
     private fun ratio(n: String, d: String): RationalNumber = RationalNumber(int(n), int(d))
 
     @Test
@@ -34,9 +37,9 @@ class RationalNumberPropertiesTest {
         assertEquals(a * (b + c), a * b + a * c)
 
         // Identities and zero
-        assertEquals(a, a + Integer.zero)
-        assertEquals(a, a * Integer.one)
-        assertEquals(ratio("0", "1"), a * Integer.zero)
+        assertEquals(a, a + zero)
+        assertEquals(a, a * one)
+        assertEquals(ratio("0", "1"), a * zero)
     }
 
     @Test
@@ -49,10 +52,10 @@ class RationalNumberPropertiesTest {
         assertEquals(ratio("0", "1"), a + (-a))
 
         // Division by self (a != 0)
-        assertEquals(Integer.one, b / b)
+        assertEquals(one, b / b)
 
         // Reciprocal identity 1/a * a == 1
-        assertEquals(Integer.one, (Integer.one / b) * b)
+        assertEquals(one, (one / b) * b)
 
         // Cancellation (c != 0)
         assertEquals(a / b, (a * c) / (b * c))
