@@ -253,7 +253,8 @@ public interface RationalNumber: RealNumber, Comparable<RationalNumber> {
         MIXED -> {
             val integerPart = integerPart()
             val integerString = if (integerPart == zero) "" else integerPart.toString(radix) + " "
-            val fractionString = fractionalPart().absolute().toString(DIVISION, radix)
+            val fractionString = (if (integerPart == zero) fractionalPart() else fractionalPart().absolute())
+                .toString(DIVISION, radix)
             "$integerString$fractionString"
         }
     }
@@ -398,10 +399,18 @@ private tailrec fun gcd(a: IntegerNumber, b: IntegerNumber): IntegerNumber = if 
 public operator fun RationalNumber.Companion.invoke(string: String, radix: Int = 10): RationalNumber {
     if (string.contains('/')) {
         val (numeratorString, denominatorString) = string.split('/', limit = 2)
-        return RationalNumber(
-            numerator = IntegerNumber.parseString(numeratorString, radix),
-            denominator = IntegerNumber.parseString(denominatorString, radix)
-        )
+        val denominator = IntegerNumber.parseString(denominatorString, radix)
+        require(denominator > zero) { "Denominator must be positive" }
+        return if (numeratorString.contains(' ')) {
+            val (integerPartString, numeratorString) = numeratorString.split(' ', limit = 2)
+            val integerPart = IntegerNumber.parseString(integerPartString, radix)
+            val numerator = IntegerNumber.parseString(numeratorString, radix)
+            require(numerator >= zero) { "Numerator must be non-negative" }
+            integerPart + numerator / denominator * (if (integerPart < zero) -one else one)
+        } else {
+            val numerator = IntegerNumber.parseString(numeratorString, radix)
+            numerator / denominator
+        }
     }
     val parts = string.split('.', ',')
     require(parts.size <= 2) { "Too many parts in string: $string" }

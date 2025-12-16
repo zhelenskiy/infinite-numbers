@@ -115,4 +115,112 @@ class RationalNumberFromStringInvokeTest {
         val r = RationalNumber("1.F", 16)
         assertEquals(ratio("31", "16").toString(FractionFormat.DIVISION, 10), r.toString(FractionFormat.DIVISION, 10))
     }
+
+    @Test
+    fun simpleFractionFormat() {
+        // Basic fraction: 3/4
+        val r1 = RationalNumber("3/4")
+        assertEquals("3/4", r1.toString(FractionFormat.DIVISION, 10))
+
+        // Negative fraction: -5/8
+        val r2 = RationalNumber("-5/8")
+        assertEquals("-5/8", r2.toString(FractionFormat.DIVISION, 10))
+
+        // Fraction that reduces: 6/8 = 3/4
+        val r3 = RationalNumber("6/8")
+        assertEquals("3/4", r3.toString(FractionFormat.DIVISION, 10))
+
+        // Integer as fraction: 10/1
+        val r4 = RationalNumber("10/1")
+        assertEquals("10", r4.toString())
+
+        // Zero numerator: 0/5
+        val r5 = RationalNumber("0/5")
+        assertEquals("0", r5.toString())
+    }
+
+    @Test
+    fun fractionFormatDifferentRadixes() {
+        // Base 2: 101/10 = 5/2 in base 10
+        val r1 = RationalNumber("101/10", 2)
+        assertEquals("5/2", r1.toString(FractionFormat.DIVISION, 10))
+
+        // Base 16: A/2 = 10/2 = 5 in base 10
+        val r2 = RationalNumber("A/2", 16)
+        assertEquals("5", r2.toString())
+
+        // Base 8: 7/4 in base 8 = 7/4 in base 10
+        val r3 = RationalNumber("7/4", 8)
+        assertEquals("7/4", r3.toString(FractionFormat.DIVISION, 10))
+    }
+
+    @Test
+    fun mixedNumberFormat() {
+        // Basic mixed number: 1 1/2 = 3/2
+        val r1 = RationalNumber("1 1/2")
+        assertEquals("3/2", r1.toString(FractionFormat.DIVISION, 10))
+
+        // Negative mixed number: -2 3/4 = -11/4
+        val r2 = RationalNumber("-2 3/4")
+        assertEquals("-11/4", r2.toString(FractionFormat.DIVISION, 10))
+
+        // Mixed number with zero integer part: 0 5/8 = 5/8
+        val r3 = RationalNumber("0 5/8")
+        assertEquals("5/8", r3.toString(FractionFormat.DIVISION, 10))
+
+        // Large mixed number: 100 1/3
+        val r4 = RationalNumber("100 1/3")
+        assertEquals("301/3", r4.toString(FractionFormat.DIVISION, 10))
+    }
+
+    @Test
+    fun mixedNumberFormatDifferentRadixes() {
+        // Base 2: 10 1/10 = (2 + 1/2) = 5/2 in base 10
+        val r1 = RationalNumber("10 1/10", 2)
+        assertEquals("5/2", r1.toString(FractionFormat.DIVISION, 10))
+
+        // Base 16: F 1/2 = (15 + 1/2) = 31/2 in base 10
+        val r2 = RationalNumber("F 1/2", 16)
+        assertEquals("31/2", r2.toString(FractionFormat.DIVISION, 10))
+    }
+
+    @Test
+    fun fractionFormatErrorCases() {
+        // Zero denominator
+        assertFailsWith<IllegalArgumentException> { RationalNumber("5/0") }
+
+        // Negative denominator is not allowed
+        assertFailsWith<IllegalArgumentException> { RationalNumber("5/-2") }
+
+        // Both negative - still not allowed
+        assertFailsWith<IllegalArgumentException> { RationalNumber("-5/-2") }
+    }
+
+    @Test
+    fun mixedNumberErrorCases() {
+        // Negative numerator in fractional part should fail
+        assertFailsWith<IllegalArgumentException> { RationalNumber("1 -1/2") }
+
+        // Zero denominator in mixed number
+        assertFailsWith<IllegalArgumentException> { RationalNumber("1 1/0") }
+
+        // Negative sign applies to whole mixed number
+        val r = RationalNumber("-1 1/2")
+        assertEquals("-3/2", r.toString(FractionFormat.DIVISION, 10))
+    }
+
+    @Test
+    fun fractionFormatWithReduction() {
+        // 12/18 reduces to 2/3
+        val r1 = RationalNumber("12/18")
+        assertEquals("2/3", r1.toString(FractionFormat.DIVISION, 10))
+
+        // Large numbers that reduce: 1000/2000 = 1/2
+        val r2 = RationalNumber("1000/2000")
+        assertEquals("1/2", r2.toString(FractionFormat.DIVISION, 10))
+
+        // Negative fraction that reduces: -8/12 = -2/3
+        val r3 = RationalNumber("-8/12")
+        assertEquals("-2/3", r3.toString(FractionFormat.DIVISION, 10))
+    }
 }
